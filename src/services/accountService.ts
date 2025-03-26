@@ -10,9 +10,8 @@ import { AxiosError } from 'axios';
 async function register(input: RegisterInput): Promise<TokenOutput> {
   try {
     const response = await registerAccount(input);
-    console.log('response', response);
     // await sendVerificationEmail(account.email, account.verificationCode ?? '');
-    const token = 'token';
+    const { token } = response.data;
     return { token };
   } catch (error) {
     if (error instanceof AxiosError) {

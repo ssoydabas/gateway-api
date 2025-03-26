@@ -121,9 +121,9 @@ export const createHttpAdapter = (baseURL: string, httpAgent?: unknown) => {
   const httpClient = createHttpClient(baseURL, httpAgent);
   
   return {
-    get: get(httpClient),
-    post: post(httpClient),
-    put: put(httpClient),
-    delete: delete_(httpClient),
+    get: <T>(url: string, headers?: Headers) => get<T>(httpClient)(url, headers),
+    post: <T>(url: string, data: unknown, headers?: Headers) => post<T>(httpClient)(url, data, headers),
+    put: <T>(url: string, data: unknown, headers?: Headers) => put<T>(httpClient)(url, data, headers),
+    delete: <T>(url: string, data?: unknown, headers?: Headers) => delete_<T>(httpClient)(url, data, headers),
   };
 };
