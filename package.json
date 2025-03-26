@@ -1,0 +1,61 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "private": true,
+  "bin": "bin/createNodejsApp.ts",
+  "main": "src/index.ts",
+  "description": "Main API service.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node ./dist/src/index.js",
+    "dev": "NODE_ENV=development nodemon --exec tsx src/index.ts",
+    "clean": "rm -rf dist",
+    "build": "pnpm clean && tsc",
+    "prettier": "prettier --write .",
+    "type-check": "tsc --project tsconfig.json --pretty --noEmit",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "dotenv-flow": "^4.1.0",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "http-status": "^2.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pino": "^9.1.0",
+    "pino-pretty": "^11.0.0",
+    "resend": "^4.1.2",
+    "ts-node": "^10.9.2",
+    "uuid": "^11.0.5",
+    "zod": "^3.23.8",
+    "zod-env": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^8.16.0",
+    "@typescript-eslint/parser": "^8.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "nodemon": "^3.1.4",
+    "pnpm": "^10.6.2",
+    "prettier": "^3.2.5",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.5.3"
+  },
+  "author": "Sertan Soydabas",
+  "license": "MIT"
+}

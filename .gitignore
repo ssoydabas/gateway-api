@@ -1,0 +1,9 @@
+node_modules
+.env
+.env.dev
+.env.prod
+dist
+coverage
+.idea
+newrelic_agent.log
+logs
