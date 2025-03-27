@@ -26,4 +26,10 @@ router.get(
   accountController.getEmailVerificationToken,
 );
 
+router.get(
+  '/verify-email',
+  validate(accountValidation.verifyEmail),
+  accountController.verifyEmail,
+);
+
 export default router;

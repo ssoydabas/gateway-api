@@ -27,6 +27,10 @@ export function getEmailVerificationTokenAccount(id: string) {
   return http.get<TokenModel>(`/accounts/get-email-verification-token/${id}`);
 }
 
+export function verifyEmailAccount(token: string) {
+  return http.post<AccountModel>(`/accounts/verify-email`, { token });
+}
+
 // ----------- GET REQUESTS -----------
 
 export function getAccountByEmail(email: string) {

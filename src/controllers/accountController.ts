@@ -27,9 +27,15 @@ const getEmailVerificationToken = catchAsync(
   },
 );
 
+const verifyEmail = catchAsync(async (req: Request, res: Response) => {
+  await accountService.verifyEmail(req.query['token'] as string);
+  res.status(httpStatus.OK).send();
+});
+
 export default {
   register,
   login,
   me,
   getEmailVerificationToken,
+  verifyEmail,
 };

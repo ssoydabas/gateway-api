@@ -17,8 +17,15 @@ const getEmailVerificationToken = z.object({
   }),
 });
 
+const verifyEmail = z.object({
+  query: z.object({
+    token: z.string(),
+  }),
+});
+
 export default {
   register,
   login,
   getEmailVerificationToken,
+  verifyEmail,
 };

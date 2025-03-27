@@ -7,6 +7,7 @@ import {
   loginAccount,
   getEmailVerificationTokenAccount,
   getAccountByEmail,
+  verifyEmailAccount,
 } from '@/adapters/auth/authAdapter';
 import { AxiosError } from 'axios';
 import { sendVerificationEmail } from '@/adapters/mail/mailAdapter';
@@ -51,9 +52,14 @@ async function getEmailVerificationToken(input: EmailInput): Promise<void> {
   await sendVerificationEmail(input.email, response.data.token);
 }
 
+async function verifyEmail(token: string): Promise<void> {
+  await verifyEmailAccount(token);
+}
+
 export default {
   register,
   login,
   me,
   getEmailVerificationToken,
+  verifyEmail,
 };
