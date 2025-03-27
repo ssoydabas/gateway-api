@@ -44,6 +44,18 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
   res.status(httpStatus.OK).send();
 });
 
+// ----------- GET REQUESTS -----------
+
+const getAccountById = catchAsync(async (req: Request, res: Response) => {
+  const account = await accountService._getAccountById(req.params['id']!);
+  res.status(httpStatus.OK).send({ account });
+});
+
+const getAccountByEmail = catchAsync(async (req: Request, res: Response) => {
+  const account = await accountService._getAccountByEmail(req.params['email']!);
+  res.status(httpStatus.OK).send({ account });
+});
+
 export default {
   register,
   login,
@@ -52,4 +64,6 @@ export default {
   verifyEmail,
   setResetPasswordToken,
   resetPassword,
+  getAccountById,
+  getAccountByEmail,
 };

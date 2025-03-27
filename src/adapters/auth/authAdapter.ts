@@ -43,6 +43,10 @@ export function resetPasswordAccount(input: ResetPasswordInput) {
 
 // ----------- GET REQUESTS -----------
 
+export function getAccountById(id: string) {
+  return http.get<AccountModel>(`/accounts/${id}`);
+}
+
 export function getAccountByEmail(email: string) {
   return http.get<AccountModel>(`/accounts/email/${email}`);
 }

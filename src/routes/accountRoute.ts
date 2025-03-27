@@ -44,4 +44,18 @@ router.post(
   accountController.resetPassword,
 );
 
+// ----------- GET REQUESTS -----------
+
+router.get(
+  '/:id',
+  validate(accountValidation.getAccountById),
+  accountController.getAccountById,
+);
+
+router.get(
+  '/email/:email',
+  validate(accountValidation.getAccountByEmail),
+  accountController.getAccountByEmail,
+);
+
 export default router;

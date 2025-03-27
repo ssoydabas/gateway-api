@@ -37,6 +37,20 @@ const resetPassword = z.object({
   }),
 });
 
+// ----------- GET REQUESTS -----------
+
+const getAccountById = z.object({
+  params: z.object({
+    id: z.string(),
+  }),
+});
+
+const getAccountByEmail = z.object({
+  params: z.object({
+    email: z.string().email(),
+  }),
+});
+
 export default {
   register,
   login,
@@ -44,4 +58,6 @@ export default {
   verifyEmail,
   setResetPasswordToken,
   resetPassword,
+  getAccountById,
+  getAccountByEmail,
 };

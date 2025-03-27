@@ -10,6 +10,7 @@ import {
   verifyEmailAccount,
   setResetPasswordTokenAccount,
   resetPasswordAccount,
+  getAccountById,
 } from '@/adapters/auth/authAdapter';
 import { AxiosError } from 'axios';
 import { sendVerificationEmail } from '@/adapters/mail/mailAdapter';
@@ -67,6 +68,18 @@ async function resetPassword(input: ResetPasswordInput): Promise<void> {
   await resetPasswordAccount(input);
 }
 
+// ----------- GET REQUESTS -----------
+
+async function _getAccountById(id: string): Promise<AccountModel> {
+  const response = await getAccountById(id);
+  return response.data;
+}
+
+async function _getAccountByEmail(email: string): Promise<AccountModel> {
+  const response = await getAccountByEmail(email);
+  return response.data;
+}
+
 export default {
   register,
   login,
@@ -75,4 +88,6 @@ export default {
   verifyEmail,
   setResetPasswordToken,
   resetPassword,
+  _getAccountById,
+  _getAccountByEmail,
 };
