@@ -9,12 +9,14 @@ import {
   getAccountByEmail,
   verifyEmailAccount,
   setResetPasswordTokenAccount,
+  resetPasswordAccount,
 } from '@/adapters/auth/authAdapter';
 import { AxiosError } from 'axios';
 import { sendVerificationEmail } from '@/adapters/mail/mailAdapter';
 import { LoginInput } from '@/schemas/account/inputs/loginInput';
 import { AccountModel } from '@/models/accountModels/accountModel';
 import { EmailInput } from '@/schemas/common/inputs/emailInput';
+import { ResetPasswordInput } from '@/schemas/account/inputs/resetPasswordInput';
 
 async function register(input: RegisterInput): Promise<TokenModel> {
   try {
@@ -61,6 +63,10 @@ async function setResetPasswordToken(input: EmailInput): Promise<void> {
   await setResetPasswordTokenAccount(input);
 }
 
+async function resetPassword(input: ResetPasswordInput): Promise<void> {
+  await resetPasswordAccount(input);
+}
+
 export default {
   register,
   login,
@@ -68,4 +74,5 @@ export default {
   getEmailVerificationToken,
   verifyEmail,
   setResetPasswordToken,
+  resetPassword,
 };

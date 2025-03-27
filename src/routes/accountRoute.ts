@@ -38,4 +38,10 @@ router.post(
   accountController.setResetPasswordToken,
 );
 
+router.post(
+  '/reset-password',
+  validate(accountValidation.resetPassword),
+  accountController.resetPassword,
+);
+
 export default router;

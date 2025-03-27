@@ -7,6 +7,7 @@ import { VerificationCodeOutput } from '@/schemas/account/outputs/verificationCo
 import { LoginInput } from '@/schemas/account/inputs/loginInput';
 import { AccountModel } from '@/models/accountModels/accountModel';
 import { EmailInput } from '@/schemas/common/inputs/emailInput';
+import { ResetPasswordInput } from '@/schemas/account/inputs/resetPasswordInput';
 
 const http = createHttpAdapter(authApiUrl + authApiSuffix);
 
@@ -34,6 +35,10 @@ export function verifyEmailAccount(token: string) {
 
 export function setResetPasswordTokenAccount(input: EmailInput) {
   return http.post(`/accounts/set-reset-password-token`, input);
+}
+
+export function resetPasswordAccount(input: ResetPasswordInput) {
+  return http.post(`/accounts/reset-password`, input);
 }
 
 // ----------- GET REQUESTS -----------

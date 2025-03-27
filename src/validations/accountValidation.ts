@@ -29,10 +29,19 @@ const setResetPasswordToken = z.object({
   }),
 });
 
+const resetPassword = z.object({
+  body: z.object({
+    token: z.string(),
+    password: z.string(),
+    confirm_password: z.string(),
+  }),
+});
+
 export default {
   register,
   login,
   getEmailVerificationToken,
   verifyEmail,
   setResetPasswordToken,
+  resetPassword,
 };

@@ -39,6 +39,11 @@ const setResetPasswordToken = catchAsync(
   },
 );
 
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  await accountService.resetPassword(req.body);
+  res.status(httpStatus.OK).send();
+});
+
 export default {
   register,
   login,
@@ -46,4 +51,5 @@ export default {
   getEmailVerificationToken,
   verifyEmail,
   setResetPasswordToken,
+  resetPassword,
 };
