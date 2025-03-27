@@ -10,17 +10,16 @@ export enum VerificationStatus {
 
 export const accountModel = z.object({
   id: z.string().uuid().default(uuid()),
-  firstName: z.string(),
-  lastName: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
   email: z.string().email(),
   phone: z.string(),
-  photoUrl: z.string().default(''),
-  verificationStatus: z
+  photo_url: z.string().default(''),
+  verification_status: z
     .nativeEnum(VerificationStatus)
     .default(VerificationStatus.PENDING),
-  verificationCode: z.string().optional().nullable().default(uuid()),
-  createdAt: z.date().default(new Date()),
-  updatedAt: z.date().default(new Date()),
+  created_at: z.date().default(new Date()),
+  updated_at: z.date().default(new Date()),
 });
 
 export type AccountModel = z.infer<typeof accountModel>;

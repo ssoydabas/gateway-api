@@ -13,7 +13,13 @@ const login = catchAsync(async (req: Request, res: Response) => {
   res.status(httpStatus.OK).send({ account });
 });
 
+const me = catchAsync(async (req: Request, res: Response) => {
+  const account = await accountService.me(req.headers.authorization!);
+  res.status(httpStatus.OK).send({ account });
+});
+
 export default {
   register,
   login,
+  me,
 };

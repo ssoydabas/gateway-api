@@ -1,13 +1,17 @@
 import { RegisterInput } from '@/schemas/account/inputs/registerInput';
-import { TokenOutput } from '@/schemas/account/outputs/tokenOutput';
+import { TokenModel } from '@/models/accountModels/tokenModel';
 import { AuthServiceError } from '@/errors/authServiceError';
-import { registerAccount } from '@/adapters/auth/authAdapter';
+import {
+  meAccount,
+  registerAccount,
+  loginAccount,
+} from '@/adapters/auth/authAdapter';
 import { AxiosError } from 'axios';
 import { sendVerificationEmail } from '@/adapters/mail/mailAdapter';
 import { LoginInput } from '@/schemas/account/inputs/loginInput';
-import { loginAccount } from '@/adapters/auth/authAdapter';
+import { AccountModel } from '@/models/accountModels/accountModel';
 
-async function register(input: RegisterInput): Promise<TokenOutput> {
+async function register(input: RegisterInput): Promise<TokenModel> {
   try {
     const response = await registerAccount(input);
     const { verification_code, token } = response.data;
@@ -25,13 +29,19 @@ async function register(input: RegisterInput): Promise<TokenOutput> {
   }
 }
 
-async function login(input: LoginInput): Promise<TokenOutput> {
+async function login(input: LoginInput): Promise<TokenModel> {
   const response = await loginAccount(input);
   const { token } = response.data;
   return { token };
 }
 
+async function me(token: string): Promise<AccountModel> {
+  const response = await meAccount(token);
+  return response.data;
+}
+
 export default {
   register,
   login,
+  me,
 };
