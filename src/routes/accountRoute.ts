@@ -20,4 +20,10 @@ router.post(
 
 router.get('/me', authorizationMiddleware, accountController.me);
 
+router.get(
+  '/get-email-verification-token',
+  validate(accountValidation.getEmailVerificationToken),
+  accountController.getEmailVerificationToken,
+);
+
 export default router;

@@ -11,7 +11,14 @@ const login = z.object({
   body: loginInput,
 });
 
+const getEmailVerificationToken = z.object({
+  query: z.object({
+    email: z.string().email(),
+  }),
+});
+
 export default {
   register,
   login,
+  getEmailVerificationToken,
 };

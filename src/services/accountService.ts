@@ -5,11 +5,14 @@ import {
   meAccount,
   registerAccount,
   loginAccount,
+  getEmailVerificationTokenAccount,
+  getAccountByEmail,
 } from '@/adapters/auth/authAdapter';
 import { AxiosError } from 'axios';
 import { sendVerificationEmail } from '@/adapters/mail/mailAdapter';
 import { LoginInput } from '@/schemas/account/inputs/loginInput';
 import { AccountModel } from '@/models/accountModels/accountModel';
+import { EmailInput } from '@/schemas/common/inputs/emailInput';
 
 async function register(input: RegisterInput): Promise<TokenModel> {
   try {
@@ -40,8 +43,17 @@ async function me(token: string): Promise<AccountModel> {
   return response.data;
 }
 
+async function getEmailVerificationToken(input: EmailInput): Promise<void> {
+  const accountResponse = await getAccountByEmail(input.email);
+  const response = await getEmailVerificationTokenAccount(
+    accountResponse.data.id,
+  );
+  await sendVerificationEmail(input.email, response.data.token);
+}
+
 export default {
   register,
   login,
   me,
+  getEmailVerificationToken,
 };

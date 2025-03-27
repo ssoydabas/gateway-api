@@ -18,8 +18,18 @@ const me = catchAsync(async (req: Request, res: Response) => {
   res.status(httpStatus.OK).send({ account });
 });
 
+const getEmailVerificationToken = catchAsync(
+  async (req: Request, res: Response) => {
+    await accountService.getEmailVerificationToken({
+      email: req.query['email'] as string,
+    });
+    res.status(httpStatus.OK).send();
+  },
+);
+
 export default {
   register,
   login,
   me,
+  getEmailVerificationToken,
 };

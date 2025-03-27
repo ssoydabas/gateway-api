@@ -22,3 +22,13 @@ export function meAccount(token: string) {
     Authorization: token,
   });
 }
+
+export function getEmailVerificationTokenAccount(id: string) {
+  return http.get<TokenModel>(`/accounts/get-email-verification-token/${id}`);
+}
+
+// ----------- GET REQUESTS -----------
+
+export function getAccountByEmail(email: string) {
+  return http.get<AccountModel>(`/accounts/email/${email}`);
+}
