@@ -5,6 +5,7 @@ import { CustomError } from '@/errors/customError';
 import httpStatus from 'http-status';
 
 import { verifyEmailTemplate } from './templates/verify-email';
+import { passwordResetTemplate } from './templates/password-reset';
 
 const resend = new Resend(resendApiKey);
 
@@ -32,7 +33,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
       from: 'TEST <onboarding@resend.dev>',
       to: email,
       subject: 'Reset your password',
-      html: `<p>Your password reset code is <strong>${token}</strong></p>`,
+      html: passwordResetTemplate(token),
     });
   } catch (error) {
     log.error('Error sending password reset email', error);

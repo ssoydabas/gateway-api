@@ -13,7 +13,10 @@ import {
   getAccountById,
 } from '@/adapters/auth/authAdapter';
 import { AxiosError } from 'axios';
-import { sendVerificationEmail } from '@/adapters/mail/mailAdapter';
+import {
+  sendPasswordResetEmail,
+  sendVerificationEmail,
+} from '@/adapters/mail/mailAdapter';
 import { LoginInput } from '@/schemas/account/inputs/loginInput';
 import { AccountModel } from '@/models/accountModels/accountModel';
 import { EmailInput } from '@/schemas/common/inputs/emailInput';
@@ -61,7 +64,9 @@ async function verifyEmail(token: string): Promise<void> {
 }
 
 async function setResetPasswordToken(input: EmailInput): Promise<void> {
-  await setResetPasswordTokenAccount(input);
+  const response = await setResetPasswordTokenAccount(input);
+  const { token } = response.data;
+  await sendPasswordResetEmail(input.email, token);
 }
 
 async function resetPassword(input: ResetPasswordInput): Promise<void> {

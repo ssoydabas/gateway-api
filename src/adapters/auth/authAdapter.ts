@@ -34,7 +34,7 @@ export function verifyEmailAccount(token: string) {
 }
 
 export function setResetPasswordTokenAccount(input: EmailInput) {
-  return http.post(`/accounts/set-reset-password-token`, input);
+  return http.post<TokenModel>(`/accounts/set-reset-password-token`, input);
 }
 
 export function resetPasswordAccount(input: ResetPasswordInput) {
