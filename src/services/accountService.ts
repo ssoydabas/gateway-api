@@ -4,6 +4,8 @@ import { AuthServiceError } from '@/errors/authServiceError';
 import { registerAccount } from '@/adapters/auth/authAdapter';
 import { AxiosError } from 'axios';
 import { sendVerificationEmail } from '@/adapters/mail/mailAdapter';
+import { LoginInput } from '@/schemas/account/inputs/loginInput';
+import { loginAccount } from '@/adapters/auth/authAdapter';
 
 async function register(input: RegisterInput): Promise<TokenOutput> {
   try {
@@ -23,6 +25,13 @@ async function register(input: RegisterInput): Promise<TokenOutput> {
   }
 }
 
+async function login(input: LoginInput): Promise<TokenOutput> {
+  const response = await loginAccount(input);
+  const { token } = response.data;
+  return { token };
+}
+
 export default {
   register,
+  login,
 };

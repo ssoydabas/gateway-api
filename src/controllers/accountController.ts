@@ -8,6 +8,12 @@ const register = catchAsync(async (req: Request, res: Response) => {
   res.status(httpStatus.OK).send({ account });
 });
 
+const login = catchAsync(async (req: Request, res: Response) => {
+  const account = await accountService.login(req.body);
+  res.status(httpStatus.OK).send({ account });
+});
+
 export default {
   register,
+  login,
 };
