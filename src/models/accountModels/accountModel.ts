@@ -1,6 +1,12 @@
 import { z } from 'zod';
-import { VerificationStatus } from './accountVerificationStatusEnum';
 import { v4 as uuid } from 'uuid';
+
+export enum VerificationStatus {
+  NOT_VERIFIED = 'not_verified',
+  PENDING = 'pending',
+  VERIFIED = 'verified',
+  REJECTED = 'rejected',
+}
 
 export const accountModel = z.object({
   id: z.string().uuid().default(uuid()),
