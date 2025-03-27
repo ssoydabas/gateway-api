@@ -8,6 +8,7 @@ import {
   getEmailVerificationTokenAccount,
   getAccountByEmail,
   verifyEmailAccount,
+  setResetPasswordTokenAccount,
 } from '@/adapters/auth/authAdapter';
 import { AxiosError } from 'axios';
 import { sendVerificationEmail } from '@/adapters/mail/mailAdapter';
@@ -56,10 +57,15 @@ async function verifyEmail(token: string): Promise<void> {
   await verifyEmailAccount(token);
 }
 
+async function setResetPasswordToken(input: EmailInput): Promise<void> {
+  await setResetPasswordTokenAccount(input);
+}
+
 export default {
   register,
   login,
   me,
   getEmailVerificationToken,
   verifyEmail,
+  setResetPasswordToken,
 };

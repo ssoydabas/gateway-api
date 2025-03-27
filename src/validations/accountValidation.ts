@@ -23,9 +23,16 @@ const verifyEmail = z.object({
   }),
 });
 
+const setResetPasswordToken = z.object({
+  body: z.object({
+    email: z.string().email(),
+  }),
+});
+
 export default {
   register,
   login,
   getEmailVerificationToken,
   verifyEmail,
+  setResetPasswordToken,
 };

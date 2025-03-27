@@ -32,10 +32,18 @@ const verifyEmail = catchAsync(async (req: Request, res: Response) => {
   res.status(httpStatus.OK).send();
 });
 
+const setResetPasswordToken = catchAsync(
+  async (req: Request, res: Response) => {
+    await accountService.setResetPasswordToken(req.body);
+    res.status(httpStatus.OK).send();
+  },
+);
+
 export default {
   register,
   login,
   me,
   getEmailVerificationToken,
   verifyEmail,
+  setResetPasswordToken,
 };
