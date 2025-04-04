@@ -29,6 +29,10 @@ app.options('*', cors());
 // enable context
 app.use(contextMiddleware);
 
+app.get('/health-check', (_, res) => {
+  res.status(httpStatus.OK).send();
+});
+
 app.use('/api/v1', routes);
 
 // send back a 404 error for any unknown api request
