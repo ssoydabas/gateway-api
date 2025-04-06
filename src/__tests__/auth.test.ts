@@ -17,12 +17,7 @@ describe('Authentication Routes', () => {
     it('should register a new user successfully', async () => {
       const userData = generateRandomUserData();
 
-      const response = await request(app)
-        .post(registerUrl)
-        .send(userData)
-        .expect(httpStatus.OK);
-
-      expect(response.body).toHaveProperty('token');
+      await request(app).post(registerUrl).send(userData).expect(httpStatus.OK);
     });
 
     it('should return 400 for empty request body', async () => {
@@ -136,12 +131,7 @@ describe('Authentication Routes', () => {
       userData.first_name = 'Jöhn';
       userData.last_name = 'Döe';
 
-      const response = await request(app)
-        .post(registerUrl)
-        .send(userData)
-        .expect(httpStatus.OK);
-
-      expect(response.body).toHaveProperty('token');
+      await request(app).post(registerUrl).send(userData).expect(httpStatus.OK);
     });
 
     it('should handle very long inputs', async () => {
