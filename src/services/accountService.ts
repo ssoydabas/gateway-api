@@ -51,22 +51,24 @@ async function me(token: string): Promise<AccountModel> {
   return response.data;
 }
 
-async function getEmailVerificationToken(input: EmailInput): Promise<void> {
+async function getEmailVerificationToken(input: EmailInput): Promise<string> {
   const accountResponse = await getAccountByEmail(input.email);
   const response = await getEmailVerificationTokenAccount(
     accountResponse.data.id,
   );
   await sendVerificationEmail(input.email, response.data.token);
+  return response.data.token;
 }
 
 async function verifyEmail(token: string): Promise<void> {
   await verifyEmailAccount(token);
 }
 
-async function setResetPasswordToken(input: EmailInput): Promise<void> {
+async function setResetPasswordToken(input: EmailInput): Promise<string> {
   const response = await setResetPasswordTokenAccount(input);
   const { token } = response.data;
   await sendPasswordResetEmail(input.email, token);
+  return token;
 }
 
 async function resetPassword(input: ResetPasswordInput): Promise<void> {

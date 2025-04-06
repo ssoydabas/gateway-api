@@ -13,7 +13,6 @@ const errorHandler = (
 ) => {
   // Handle CustomError
   if (err instanceof CustomError) {
-    console.log('Custom Error');
     const response = err.toJSON();
     log.error('CUSTOM ERROR', err);
     res.status(err.status).json(response);

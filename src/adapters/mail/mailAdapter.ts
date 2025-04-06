@@ -3,6 +3,7 @@ import { resendApiKey } from '@/constants';
 import { log } from '@/utils/logger/logger';
 import { CustomError } from '@/errors/customError';
 import httpStatus from 'http-status';
+import env from '@/config';
 
 import { verifyEmailTemplate } from './templates/verify-email';
 import { passwordResetTemplate } from './templates/password-reset';
@@ -10,6 +11,8 @@ import { passwordResetTemplate } from './templates/password-reset';
 const resend = new Resend(resendApiKey);
 
 export const sendVerificationEmail = async (email: string, token: string) => {
+  if (env.NODE_ENV === 'test') return;
+
   try {
     await resend.emails.send({
       from: 'TEST <onboarding@resend.dev>',
@@ -28,6 +31,8 @@ export const sendVerificationEmail = async (email: string, token: string) => {
 };
 
 export const sendPasswordResetEmail = async (email: string, token: string) => {
+  if (env.NODE_ENV === 'test') return;
+
   try {
     await resend.emails.send({
       from: 'TEST <onboarding@resend.dev>',
@@ -46,6 +51,8 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
 };
 
 export const sendEmailUpdateEmail = async (email: string, token: string) => {
+  if (env.NODE_ENV === 'test') return;
+
   try {
     await resend.emails.send({
       from: 'TEST <onboarding@resend.dev>',
