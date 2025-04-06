@@ -392,4 +392,168 @@ describe('Authentication Routes', () => {
       expect(response.body.message).toBe('Account not found');
     });
   });
+
+  describe('Account Retrieval', () => {
+    describe('GET /:id', () => {
+      it('should return account details by id', async () => {
+        const userData = generateRandomUserData();
+        await request(app)
+          .post(registerUrl)
+          .send(userData)
+          .expect(httpStatus.OK);
+
+        const loginResponse = await request(app)
+          .post(loginUrl)
+          .send({
+            email: userData.email,
+            password: userData.password,
+          })
+          .expect(httpStatus.OK);
+
+        const { token } = loginResponse.body;
+
+        const meResponse = await request(app)
+          .get(meUrl)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(httpStatus.OK);
+
+        const response = await request(app)
+          .get(`/api/v1/accounts/${meResponse.body.id}`)
+          .expect(httpStatus.OK);
+
+        expect(response.body).toHaveProperty('id');
+        expect(response.body).toHaveProperty('email', userData.email);
+        expect(response.body).toHaveProperty('first_name', userData.first_name);
+        expect(response.body).toHaveProperty('last_name', userData.last_name);
+      });
+
+      it('should return 400 for non-existent account with invalid id', async () => {
+        const userData = generateRandomUserData();
+        await request(app)
+          .post(registerUrl)
+          .send(userData)
+          .expect(httpStatus.OK);
+
+        await request(app)
+          .post(loginUrl)
+          .send({
+            email: userData.email,
+            password: userData.password,
+          })
+          .expect(httpStatus.OK);
+
+        const response = await request(app)
+          .get('/api/v1/accounts/non-existent-id')
+          .expect(httpStatus.BAD_REQUEST);
+
+        expect(response.body).toHaveProperty('type', 'BAD_REQUEST');
+        expect(response.body).toHaveProperty(
+          'message',
+          'Invalid account ID: must be a positive number',
+        );
+      });
+
+      it('should return 404 for non-existent account with valid id', async () => {
+        const userData = generateRandomUserData();
+        await request(app)
+          .post(registerUrl)
+          .send(userData)
+          .expect(httpStatus.OK);
+
+        await request(app)
+          .post(loginUrl)
+          .send({
+            email: userData.email,
+            password: userData.password,
+          })
+          .expect(httpStatus.OK);
+
+        const response = await request(app)
+          .get('/api/v1/accounts/123456789')
+          .expect(httpStatus.NOT_FOUND);
+
+        expect(response.body).toHaveProperty('type', 'NOT_FOUND');
+        expect(response.body).toHaveProperty('message', 'Account not found');
+      });
+    });
+
+    describe('GET /email/:email', () => {
+      it('should return account details by email', async () => {
+        const userData = generateRandomUserData();
+        await request(app)
+          .post(registerUrl)
+          .send(userData)
+          .expect(httpStatus.OK);
+
+        await request(app)
+          .post(loginUrl)
+          .send({
+            email: userData.email,
+            password: userData.password,
+          })
+          .expect(httpStatus.OK);
+
+        const response = await request(app)
+          .get(`/api/v1/accounts/email/${userData.email}`)
+          .expect(httpStatus.OK);
+
+        expect(response.body).toHaveProperty('id');
+        expect(response.body).toHaveProperty('email', userData.email);
+        expect(response.body).toHaveProperty('first_name', userData.first_name);
+        expect(response.body).toHaveProperty('last_name', userData.last_name);
+      });
+
+      it('should return 404 for non-existent email', async () => {
+        const userData = generateRandomUserData();
+        await request(app)
+          .post(registerUrl)
+          .send(userData)
+          .expect(httpStatus.OK);
+
+        await request(app)
+          .post(loginUrl)
+          .send({
+            email: userData.email,
+            password: userData.password,
+          })
+          .expect(httpStatus.OK);
+
+        const response = await request(app)
+          .get('/api/v1/accounts/email/non-existent@example.com')
+          .expect(httpStatus.NOT_FOUND);
+
+        expect(response.body).toHaveProperty('type', 'NOT_FOUND');
+        expect(response.body).toHaveProperty('message', 'Account not found');
+      });
+
+      it('should return 400 for invalid email format', async () => {
+        const userData = generateRandomUserData();
+        await request(app)
+          .post(registerUrl)
+          .send(userData)
+          .expect(httpStatus.OK);
+
+        await request(app)
+          .post(loginUrl)
+          .send({
+            email: userData.email,
+            password: userData.password,
+          })
+          .expect(httpStatus.OK);
+
+        const response = await request(app)
+          .get('/api/v1/accounts/email/invalid-email')
+          .expect(httpStatus.BAD_REQUEST);
+
+        expect(response.body).toHaveProperty('status', 400);
+        expect(response.body).toHaveProperty('code', 'VALIDATION_ERROR');
+        expect(response.body.details.errors).toContainEqual(
+          expect.objectContaining({
+            path: 'params.email',
+            message: 'Invalid email',
+          }),
+        );
+      });
+    });
+  });
 });

@@ -51,12 +51,12 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
 
 const getAccountById = catchAsync(async (req: Request, res: Response) => {
   const account = await accountService._getAccountById(req.params['id']!);
-  res.status(httpStatus.OK).send({ account });
+  res.status(httpStatus.OK).send(account);
 });
 
 const getAccountByEmail = catchAsync(async (req: Request, res: Response) => {
   const account = await accountService._getAccountByEmail(req.params['email']!);
-  res.status(httpStatus.OK).send({ account });
+  res.status(httpStatus.OK).send(account);
 });
 
 export default {
