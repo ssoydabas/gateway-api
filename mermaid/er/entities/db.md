@@ -7,8 +7,9 @@ erDiagram
         string last_name
         string email "uniqueIndex:idx_email"
         string phone "uniqueIndex:idx_phone"
+        enum status "active | inactive"
         enum verification_status "verified | pending"
-        string photo_url "nullable"
+        string profile_photo_url "nullable"
         enum role "common | admin | manager | teacher | student"
         datetime last_login_at
         datetime created_at
@@ -41,6 +42,7 @@ erDiagram
         uint id PK
         uint account_id FK
         enum status "active | inactive"
+        string description "nullable"
         datetime created_at
         datetime updated_at
         datetime deleted_at "index"
@@ -50,6 +52,7 @@ erDiagram
         uint id PK
         uint account_id FK
         enum status "active | inactive"
+        string description "nullable"
         datetime created_at
         datetime updated_at
         datetime deleted_at "index"
@@ -58,8 +61,9 @@ erDiagram
     TEACHER {
         uint id PK
         uint account_id FK
+        uint assigned_by FK
         enum status "active | inactive"
-        string description
+        string description "nullable"
         datetime created_at
         datetime updated_at
         datetime deleted_at "index"
@@ -68,8 +72,9 @@ erDiagram
     STUDENT {
         uint id PK
         uint account_id FK
+        uint assigned_by FK
         enum status "active | inactive"
-        string description
+        string description "nullable"
         datetime created_at
         datetime updated_at
         datetime deleted_at "index"
@@ -77,9 +82,10 @@ erDiagram
 
     BRANCH {
         uint id PK
-        enum status "active | inactive"
         string name
         string description
+        string photo_url "nullable"
+        enum status "active | inactive"
         datetime created_at
         datetime updated_at
         datetime deleted_at "index"
@@ -89,6 +95,7 @@ erDiagram
         uint id PK
         string name
         string photo_url "nullable"
+        enum status "active | inactive"
         datetime created_at
         datetime updated_at
         datetime deleted_at "index"
@@ -96,6 +103,8 @@ erDiagram
 
     _CLASS {
         uint id PK
+        uint room_id FK
+        uint teacher_id FK
         string name
         enum level "beginner | preintermediate | intermediate | advanced | professional"
         number duration
@@ -113,7 +122,12 @@ erDiagram
 
     LESSON {
         uint id PK
-        string type
+        uint room_id FK
+        uint class_id FK "index"
+        uint branch_id FK
+        uint teacher_id FK
+        uint substitute_teacher_id FK
+        enum type "regular | makeup | extra"
         enum status "completed | cancelled | scheduled"
         datetime date
         datetime starts_at
@@ -129,6 +143,8 @@ erDiagram
 
     ATTENDANCE {
         uint id PK
+        uint student_id FK "index"
+        uint lesson_id FK
         enum status "present | absent"
         datetime created_at
         datetime updated_at
@@ -165,48 +181,37 @@ erDiagram
         datetime deleted_at "index"
     }
 
-    BOOKING {
-        uint id PK
-        uint student_id FK "ref:STUDENT.id"
-        uint room_id FK "ref:ROOM.id"
-        datetime requested_date
-        number duration
-        enum status "pending | approved | rejected"
-        string rejection_reason "nullable"
-        string notes "nullable"
-        uint manager_id FK "nullable ref:MANAGER.id"
-        datetime created_at
-        datetime updated_at
-        datetime deleted_at "index"
-    }
-
     ACCOUNT ||--|| ACCOUNT_PASSWORD : "1:1 (foreignKey:account_id)"
     ACCOUNT ||--|| ACCOUNT_TOKENS : "1:1 (foreignKey:account_id)"
+
     ACCOUNT ||--o{ ADMIN : "1:1 (foreignKey:account_id)"
     ACCOUNT ||--o{ MANAGER : "1:1 (foreignKey:account_id)"
     ACCOUNT ||--o{ TEACHER : "1:1 (foreignKey:account_id)"
     ACCOUNT ||--o{ STUDENT : "1:1 (foreignKey:account_id)"
 
     TEACHER ||--o{ TEACHER_BRANCH : "1:N (foreignKey:teacher_id)"
-    STUDENT ||--o{ STUDENT_BRANCH : "1:N (foreignKey:student_id)"
     BRANCH ||--o{ TEACHER_BRANCH : "1:N (foreignKey:branch_id)"
+
+    STUDENT ||--o{ STUDENT_BRANCH : "1:N (foreignKey:student_id)"
     BRANCH ||--o{ STUDENT_BRANCH : "1:N (foreignKey:branch_id)"
 
     BRANCH ||--o{ _CLASS : "1:N (foreignKey:branch_id)"
+
     ROOM ||--o{ _CLASS : "1:N (foreignKey:room_id)"
+
     TEACHER ||--o{ _CLASS : "1:N (foreignKey:teacher_id)"
+
     _CLASS ||--o{ _CLASS_STUDENT : "1:N (foreignKey:class_id)"
     STUDENT ||--o{ _CLASS_STUDENT : "1:N (foreignKey:student_id)"
 
     _CLASS ||--o{ LESSON : "1:N (foreignKey:class_id)"
+
     ROOM ||--o{ LESSON : "1:N (foreignKey:room_id)"
+
     TEACHER ||--o{ LESSON : "1:N (foreignKey:teacher_id)"
     TEACHER }o--o{ LESSON : "0..1 (foreignKey:substitute_teacher_id)"
+
     LESSON ||--o{ ATTENDANCE : "1:N (foreignKey:lesson_id)"
     STUDENT ||--o{ ATTENDANCE : "1:N (foreignKey:student_id)"
-
-    STUDENT ||--o{ BOOKING : "1:N (foreignKey:student_id)"
-    ROOM ||--o{ BOOKING : "1:N (foreignKey:room_id)"
-    MANAGER }o--o{ BOOKING : "0..1 (foreignKey:manager_id)"
 
 ```
