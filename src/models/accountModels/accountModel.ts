@@ -18,6 +18,9 @@ export const accountModel = z.object({
   verification_status: z
     .nativeEnum(VerificationStatus)
     .default(VerificationStatus.PENDING),
+  role: z.string(),
+  status: z.string(),
+  last_login_at: z.date(),
   created_at: z.date().default(new Date()),
   updated_at: z.date().default(new Date()),
 });
